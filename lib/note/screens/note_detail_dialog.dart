@@ -14,6 +14,7 @@ class NoteDetailDialogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetAnimationDuration: Duration(seconds: 5),
       alignment: Alignment.bottomCenter,
       insetPadding: EdgeInsets.zero,
       child: BlocProvider(

@@ -13,7 +13,12 @@
 part of 'app_router.dart';
 
 class _$AppRouter extends RootStackRouter {
-  _$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
+  _$AppRouter({
+    GlobalKey<NavigatorState>? navigatorKey,
+    required this.authGuard,
+  }) : super(navigatorKey);
+
+  final AuthGuard authGuard;
 
   @override
   final Map<String, PageFactory> pagesMap = {
@@ -42,8 +47,19 @@ class _$AppRouter extends RootStackRouter {
           note: args.note,
         ),
         customRouteBuilder: DialogModalRoute.dialogRouteBuilder,
+        transitionsBuilder: TransitionsBuilders.slideLeft,
         opaque: true,
-        barrierDismissible: false,
+        barrierDismissible: true,
+      );
+    },
+    UserNotAuthedDialogRoute.name: (routeData) {
+      return CustomPage<dynamic>(
+        routeData: routeData,
+        child: const UserNotAuthedDialogScreen(),
+        customRouteBuilder: DialogModalRoute.dialogRouteBuilder,
+        transitionsBuilder: TransitionsBuilders.slideLeft,
+        opaque: true,
+        barrierDismissible: true,
       );
     },
   };
@@ -53,6 +69,7 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(
           NoteListRoute.name,
           path: '/',
+          guards: [authGuard],
         ),
         RouteConfig(
           NoteDetailRoute.name,
@@ -61,6 +78,10 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(
           NoteDetailDialogRoute.name,
           path: '/note_dialog/:id',
+        ),
+        RouteConfig(
+          UserNotAuthedDialogRoute.name,
+          path: '/auth/fail',
         ),
       ];
 }
@@ -143,4 +164,16 @@ class NoteDetailDialogRouteArgs {
   String toString() {
     return 'NoteDetailDialogRouteArgs{key: $key, note: $note}';
   }
+}
+
+/// generated route for
+/// [UserNotAuthedDialogScreen]
+class UserNotAuthedDialogRoute extends PageRouteInfo<void> {
+  const UserNotAuthedDialogRoute()
+      : super(
+          UserNotAuthedDialogRoute.name,
+          path: '/auth/fail',
+        );
+
+  static const String name = 'UserNotAuthedDialogRoute';
 }
